@@ -3,8 +3,7 @@
 1. [Problem](README.md#problem)
 2. [Approach](README.md#approach)
 3. [Run](README.md#run)
-4. [Adding input files](README.md#adding-input-files)
-5. [Issues and considerations](README.md#issues-and-considerations)
+4. [Issues and considerations](README.md#issues-and-considerations)
 
 # Problem
 
@@ -14,11 +13,12 @@ Given an EDGAR weblog file, we want to calculate user sessions grouped by IP wit
 
 `sessionization.py` stores each user as an element in a dictionary, keyed by the IP, with start time, pageviews, and time-to-live (TTL). Its main loop reads `log.csv` line by line:
 
-1. Converts date and time into seconds elapsed since beginning of program
+1. Converts date and time into seconds elapsed since last update
 2. If the user already exists, increment their pageviews and refresh time-to-live (TTL)
-3. Updates time-to-live (TTL) of each remaining IP
+3. Updates time-to-live (TTL) of each remaining IO
+4. If TTL is non-positive, terminate session and write to file
 
-It converts the newest timestamp into seconds elapsed since beginning of program (for faster calculations). Then the time-to-live field of each IP is updated, and those that have expired are written into the output file.
+Once it reaches the end of the file, remaining sessions are written to the output file.
 
 # Run
 
@@ -34,4 +34,6 @@ To print debugging, use the flag `-d`. Any of the testsuites in the `insight_tes
 ./run.sh -d -t test_1
 ```
 
+# Issues and considerations
 
+Currently it does not stream `log.csv` and so does not know if it has been updated over the course of the main loop. It also does not check if data fields are valid.
