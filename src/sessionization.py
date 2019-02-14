@@ -102,7 +102,7 @@ def process_logfile(inputfile, outfile, ttl):
                             if DEBUG:
                                 print("Ending session")
                                 print users[i]
-
+                                
                             # the last time is equal to current time adjusted by TTL field and TTL
                             endtime=curtime-datetime.timedelta(seconds=ttl-users[i][2])
                             fo.write("%s,%s,%s,%d,%d\n" %(i, str(users[i][0]), str(endtime), int((endtime-users[i][0]).total_seconds())+1, users[i][1]))
